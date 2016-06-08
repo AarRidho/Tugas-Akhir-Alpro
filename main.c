@@ -23,7 +23,6 @@ typedef struct{
 void showListItems();
 void shoppingCart(char);
 void garis(char, int);
-void swap(mesin *, mesin*);
 void Stocks(mesin *);
 char subMenu(mesin *);
 char menuTransaksi();
@@ -52,23 +51,21 @@ int main(){
 				}else{
 					shoppingCart(plh);
 					cart1.count++;
-					if(cart1.count>maxitemcap-1){
+					if(cart1.count==0){
+						system("cls");
+						printf("Anda belum memilih apapun\n");
+					}else if(cart1.count>maxitemcap-1){
 						printf("\nAnda sudah memenuhi batas maksimal item\n");
 						system("pause>null");
 						plh=menuTransaksi();
 						cart1.totalbiaya=0;
 					}
 				}
-				//system("pause");
-				//cart1.totalbiaya=0;
 			}while(plh!='E');
-		}else if(pilih=='2'){  //jika pilih = 2
-			printf("mencet 2\n");
-			system("pause");
 		}else{
 			pilih='0';
 		}
-	}while(pilih!='4'); //Jika Pilih = 4, keluar dari looping while
+	}while(pilih!='2'); //Jika Pilih = 4, keluar dari looping while
 	system("pause");  // hentikan layar, tunggu user menekan tombol
 }
 
@@ -79,8 +76,8 @@ char menu(mesin *vending1){
 	printf("Warning: ketika anda memilih 1 \n");
 	printf("Anda sudah memasuki wilayah transaksi pembayaran \n");
 	printf("1. Beli Makanan/Minuman \n");
-	printf("2. Admin \n");
-	printf("Silakan pilih (1/2) : ");
+	//printf("2. Exit \n");
+	printf("Silakan pilih (1) : ");
 	scanf("%c",&pilih); //tampung masukan dari user ke variabel pilih
 	return pilih; // kembalikan nilai variabel pilih
 }
@@ -97,7 +94,7 @@ char menuTransaksi(){
 			printf("|%-2d |%-26s|%8d|\n",i+1,vending1[cart1.barangCart[i]].barang,cart1.jmlbrg[i]);
 		}
 		garis('=',40);
-		printf("%d",cart1.scanUang);
+		printf("\nAnda memasukan: %d\n",cart1.scanUang);
 		cart1.scanUang+=totalTransaksi();
 	}while(cart1.scanUang<cart1.totalbiaya);
 	printf("\nKembalian anda: %d\n", cart1.scanUang-cart1.totalbiaya);
@@ -105,15 +102,10 @@ char menuTransaksi(){
 		cart1.jmlbrg[i]=0;
 	}
 	system("pause>null");
+	system("cls");
+	printf("Terimakasih atas pemesanannya!");
 	char c='E';
 	return c;
-}
-
-void swap(mesin *a, mesin *b){
-	mesin c;
-	c=*a;
-	*a=*b;
-	*b=c;
 }
 
 void shoppingCart(char k){
@@ -161,7 +153,7 @@ void showListItems(){
 	garis('=',40);
 	printf("|No.|%-26s| Harga |	\n","Makanan");
 	garis('=',40);
-	for(i=0;i<=maxitem;i++){
+	for(i=0;i<maxitem;i++){
 		if((vending1[i].stockbrg==0)&&(vending1[i].harga!=0)){
 			printf("|%-2d |%-26s|%7s|\n",i+1,vending1[i].barang,"<Out of Stock>");
 		}else if(strcmp(vending1[i].jenis,"Makanan")==0){
@@ -182,11 +174,11 @@ void showListItems(){
 }
 
 char subMenu(mesin *vending1){
-	int i, count=0;
+	int i;
 	char pilih;
 	showListItems();
 	printf("Press 'N' for next\n");
-	printf("Silahkan pilih item(%d): ",count);
+	printf("Silahkan pilih item: ");
 	scanf("%s",&pilih); //tampung masukan dari user ke variabel pilih
 	getchar();
 	return pilih; // kembalikan nilai variabel pilih
@@ -243,7 +235,7 @@ void Stocks(mesin *vending1){
 
 int insertToken(){
 	char get;
-	printf("1. 2000\t\t2. 10000\t3. 50000\t4. 100000\n");
+	printf("1. 2000 \t2. 5000 \t3. 10000 \t4. 20000\t5. 50000\t6. 100000\n");
 	printf("Silahkan Masukan uang anda: ");
 	get=getche();
 	if(get=='1'){
@@ -251,14 +243,22 @@ int insertToken(){
 		system("pause>null");
 		return 2000;
 	}else if(get=='2'){
+		printf("Anda memasukan 5000");
+		system("pause>null");
+		return 50000;
+	}else if(get=='3'){
 		printf("Anda memasukan 10000");
 		system("pause>null");
 		return 10000;
-	}else if(get=='3'){
+	}else if(get=='4'){
+		printf("Anda memasukan 20000");
+		system("pause>null");
+		return 20000;
+	}else if(get=='5'){
 		printf("Anda memasukan 50000");
 		system("pause>null");
 		return 50000;
-	}else if(get=='4'){
+	}else if(get=='6'){
 		printf("Anda memasukan 100000");
 		system("pause>null");
 		return 100000;
